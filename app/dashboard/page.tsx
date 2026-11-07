@@ -3,6 +3,7 @@ import { getSession } from '@/lib/session'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import AddEntry from '@/components/AddEntry'
+import DeleteEntryButton from '@/components/DeleteEntryButton'
 export default async function Dash() {
   const s = await getSession()
   if (!s) redirect('/login')
@@ -17,10 +18,13 @@ export default async function Dash() {
       <AddEntry />
       <div className="space-y-3">
         {entries.map((e: any) => (
-          <div key={e.id} className="bg-white p-4 rounded shadow text-sm">
-            {e.title && <p className="font-medium">{e.title}</p>}
-            <p className="text-gray-600 mt-1">{e.content}</p>
-            <p className="text-xs text-gray-400 mt-2">{e.date}</p>
+          <div key={e.id} className="bg-white p-4 rounded shadow flex justify-between items-start text-sm">
+            <div>
+              {e.title && <p className="font-medium">{e.title}</p>}
+              <p className="text-gray-600 mt-1">{e.content}</p>
+              <p className="text-xs text-gray-400 mt-2">{e.date}</p>
+            </div>
+            <DeleteEntryButton id={e.id} />
           </div>
         ))}
         {entries.length === 0 && <p className="text-gray-500">No entries yet</p>}
